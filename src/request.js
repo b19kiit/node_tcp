@@ -39,7 +39,7 @@ class Request {
     if(type == 'b') return buffer.slice(1, buffer.length)
     if(type == 's') return String(buffer.slice(1, buffer.length))
     if(type == 'o') return JSON.parse(String(buffer.slice(1, buffer.length)))
-    throw throw Error("Invalid Buffer - Unknown DATA_TYPE")
+    throw Error("Invalid Buffer - Unknown DATA_TYPE")
   }
 
   // CAPSULE_FORMAT = [ HEADER_SIZE - 4 byte | BODY_SIZE - 4 byte | HEADER - DATA_CELL_FORMAT | BODY - DATA_CELL_FORMAT ]
@@ -68,3 +68,5 @@ class Request {
     }
   }
 }
+
+module.exports.Request = Request
