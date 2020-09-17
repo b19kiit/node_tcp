@@ -1,0 +1,15 @@
+{
+  "name": "simple_hello_hi",
+  "version": "1.0.0",
+  "description": "example-1 for node_TCP",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Rishav Bhowmik",
+  "license": "MIT",
+  "dependencies": {
+    "inputsync": "^1.0.6"
+  }
+}

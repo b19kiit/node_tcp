@@ -9,6 +9,7 @@ module.exports.TCPClient = TCPClient;
 //UNIT TESTS
 
 //server
+/*
 const server = new TCPServer(8800, (socket)=>{
 
   socket.on('say', async (data)=>{
@@ -26,8 +27,10 @@ const server = new TCPServer(8800, (socket)=>{
 
   socket.emit('say', "Hey We are Connected")
 })
+*/
 
 //Client
+/*
 const cli = new TCPClient({port:8800}, (socket)=>{
   cli.on('say', (data)=>{
     console.log(`Server Says - ${data.toString()}`)
@@ -38,3 +41,4 @@ const cli = new TCPClient({port:8800}, (socket)=>{
   })
   //console.log(cli.data_inflow_event_list);
 })
+*/

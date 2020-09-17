@@ -12,11 +12,9 @@ class TCPClient {
 
       this_class.socket.on('data', (data)=>{
         try {
-          console.log(data);
           const content = Request.antonym(data)
           if(content.error) throw content.error
           const id = content.header.id
-          console.log(70, id);
           if((typeof id != 'string')&&(typeof id != 'number')) throw Error('bad server call')
           if(this_class.data_inflow_event_list[id] instanceof Function)
             this_class.data_inflow_event_list[id](content.body)
@@ -44,9 +42,22 @@ class TCPClient {
       throw Error('failed to connect\n'+e)
     }
   }
+
+  ___disconnection(){
+    const this_class = this
+    this_class.end()
+    if (this_class.disconnect_handler instanceof Function) this_class.disconnect_handler()
+  }
+
   emit(id, content){
     const this_class = this
-    this_class.socket.write(Request.capsule({id:id}, content))
+    const buffer = Request.capsule({id:id}, content)
+    try {
+      this_class.socket.write(buffer)
+    } catch (e) {
+      if(e.message == 'This socket has been ended by the other party')
+      this_class.___disconnection(e)
+    }
   }
   on(id, function_call){
     if(! (function_call instanceof Function)) throw Error("2nd Parameter should be function")
