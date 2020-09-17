@@ -4,8 +4,11 @@ const TCPClient = require('./src/client.js')
 
 module.exports.Request = Request;
 module.exports.TCPServer = TCPServer;
+module.exports.TCPClient = TCPClient;
 
+//UNIT TESTS
 
+//server
 const server = new TCPServer(8800, (socket)=>{
 
   socket.on('say', async (data)=>{
@@ -23,10 +26,6 @@ const server = new TCPServer(8800, (socket)=>{
 
   socket.emit('say', "Hey We are Connected")
 })
-
-//parentPort.postMessage("server ready")
-
-
 
 //Client
 const cli = new TCPClient({port:8800}, (socket)=>{
