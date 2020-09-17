@@ -69,4 +69,4 @@ class Request {
   }
 }
 
-module.exports.Request = Request
+module.exports = Request
