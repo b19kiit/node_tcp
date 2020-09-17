@@ -14,7 +14,7 @@ class ConSocket {
         if((typeof id != 'string') && (typeof id != 'number')) throw Error('bad server call')
 
         //use data_inflow_event function only and only if it exists
-        (this_class.data_inflow_event_list[id] && this_class.data_inflow_event_list[id](content.body))
+        if(this_class.data_inflow_event_list[id] instanceof Function) this_class.data_inflow_event_list[id](content.body)
 
       } catch (e) {
         //Error here is most likely to originate from fault on client side
@@ -28,8 +28,9 @@ class ConSocket {
     this_class.con_close_handler = null
     this_class.socket.on('end', (data)=>{
       //adding try catch block to pervent termination of the server
+      this_class.socket.end()
       try {
-        (this_class.disconnect_handler && this_class.disconnect_handler())
+        if (this_class.con_close_handler instanceof Function) this_class.con_close_handler()
       } catch (e) {
         console.error("ERROR ORIGINATED FROM ConSocket.disconnect_handler" + e)
       }
@@ -52,13 +53,13 @@ class ConSocket {
   //event to check connection close and trigger handler
   on_close(function_call){
     if(typeof function_call != 'function') throw Error("1st Parameter function_call should be type function")
-    this_class.disconnect_handler = function_call
+    this.con_close_handler = function_call
   }
 
   //event to check disconnection and trigger handler
   on_disconnect(function_call){
     if(typeof function_call != 'function') throw Error("1st Parameter function_call should be type function")
-    this_class.disconnect_handler = function_call
+    this.disconnect_handler = function_call
   }
 
   //removing id specific even lister to recive data from client
@@ -67,8 +68,6 @@ class ConSocket {
     delete this.data_inflow_event_list[id]
   }
 }
-
-
 
 class TCPServer {
   constructor(port, process_when_connected) {
@@ -94,3 +93,5 @@ class TCPServer {
   }
 }
 TCPServer.net = require('net')
+
+module.exports = TCPServer;
