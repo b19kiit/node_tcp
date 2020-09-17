@@ -4,12 +4,14 @@ const Request = require('./request.js')
 class ConSocket {
   constructor(socket) {
     const this_class = this //constant refrence to this
+
     this_class.data_inflow_event_list = {} //event specific functions are stored in data_inflow_event_list object
     this_class.socket = socket
-    this_class.socket.on('data', (data)=>{ //'data' stores the raw buffer data sent by the client
+
+    this_class.socket.on('data', (data) => { //'data' stores the raw buffer data sent by the client
       try {
         const content = Request.antonym(data) // decode raw buffer
-        const id = content.header.id // if for event specific
+        const id = content.header.id // id for event specific
 
         if((typeof id != 'string') && (typeof id != 'number')) throw Error('bad server call')
 
@@ -67,8 +69,13 @@ class ConSocket {
     this.data_inflow_event_list[id] = null
     delete this.data_inflow_event_list[id]
   }
+
+  end(){
+    this.socket.end()
+  }
 }
 
+//TCPServer class is to operate a TCP connection listening to designated port of the system
 class TCPServer {
   constructor(port, process_when_connected) {
     const this_class = this
