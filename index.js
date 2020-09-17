@@ -1,5 +1,6 @@
 const Request = require('./src/request.js')
-const TCPServer = require('./src/server');
+const TCPServer = require('./src/server.js')
+const TCPClient = require('./src/client.js')
 
 module.exports.Request = Request;
 module.exports.TCPServer = TCPServer;
@@ -24,3 +25,17 @@ const server = new TCPServer(8800, (socket)=>{
 })
 
 //parentPort.postMessage("server ready")
+
+
+
+//Client
+const cli = new TCPClient({port:8800}, (socket)=>{
+  cli.on('say', (data)=>{
+    console.log(`Server Says - ${data.toString()}`)
+    socket.emit('say', "Yes we are connect :-)")
+    setTimeout(()=>{
+      cli.socket.end()
+    }, 1000)
+  })
+  //console.log(cli.data_inflow_event_list);
+})
